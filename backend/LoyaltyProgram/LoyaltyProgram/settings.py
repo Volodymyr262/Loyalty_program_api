@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure--jc815ltex-1kbr-o%#pl*rcr@62*eqzu8_l2$^co_frb@em)z'
+DB_PASSWORD = os.getenv('DB_PASS', default='default_password')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +32,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
+    'transactions',
+    'loyalty',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,8 +79,12 @@ WSGI_APPLICATION = 'LoyaltyProgram.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'loyalty_db',  # Имя вашей базы данных
+        'USER': 'postgres',  # Имя пользователя базы данных
+        'PASSWORD': DB_PASSWORD,  # Пароль пользователя
+        'HOST': 'localhost',  # Адрес сервера базы данных
+        'PORT': '5432',  # Порт базы данных (обычно 5432)
     }
 }
 
